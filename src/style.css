@@ -25,31 +25,32 @@ body {
 /* Background animated blob */
 .blob {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     background: var(--blob-gradient);
     border-radius: 50%;
-    filter: blur(120px); /* Increased blur */
+    filter: blur(150px);
     z-index: -1;
-    animation: move 10s infinite alternate;
+    animation: move 15s infinite alternate;
 }
 
 .card {
-    background: var(--card-bg);
-    backdrop-filter: blur(25px); /* Increased blur */
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 40px;
-    border-radius: 40px; /* M3 Squircle */
+    border-radius: 40px;
     text-align: center;
-    width: 280px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* More dynamic ease-out */
-    transition: background 0.4s ease, box-shadow 0.3s ease;
+    width: 300px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+    animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.4s ease;
 }
 
 .card:hover {
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
 }
 
 .label {
@@ -121,6 +122,14 @@ button:active {
     background: #174ea6;
 }
 
+.logo-area {
+    transition: transform 0.3s ease;
+}
+
+.logo-area:hover {
+    transform: scale(1.1);
+}
+
 .download-link {
     display: inline-block;
     margin-top: 15px;
@@ -186,10 +195,116 @@ button:active {
 
 /* Dark Mode class */
 .dark-mode {
-    --bg: #000;
-    --card-bg: rgba(30, 30, 30, 0.8);
-    --text: #e8eaed;
-    --subtext: #9aa0a6;
-    --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
-    --border: rgba(255, 255, 255, 0.1);
+    --bg: #0c0c0c;
+    --card-bg: rgba(10, 10, 10, 0.1);
+    --text: #f0f0f0;
+    --subtext: #a0a0a0;
+    --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #333 100%);
+    --border: rgba(255, 255, 255, 0.15);
+}
+
+.history-button {
+    margin-top: 15px;
+    background: none;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.history-button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.history-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10;
+}
+
+.history-drawer.visible {
+    transform: translateY(0);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.history-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text);
+}
+
+.history-header button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--subtext);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.share-button {
+    background: var(--primary);
+    border: none;
+    color: white;
+    padding: 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s, box-shadow 0.3s ease;
+    flex-grow: 1;
+}
+
+.share-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.share-button:active {
+    transform: scale(0.95);
+    background: #174ea6;
 }
