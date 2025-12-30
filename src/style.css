@@ -164,3 +164,32 @@ button:active {
     from { transform: translate(-50px, -50px); }
     to { transform: translate(50px, 50px); }
 }
+
+/* Light & Dark mode theme switcher styles */
+#theme-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+#theme-switcher:active {
+    transform: scale(0.9);
+}
+
+#theme-switcher img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Dark Mode class */
+.dark-mode {
+    --bg: #000;
+    --card-bg: rgba(30, 30, 30, 0.8);
+    --text: #e8eaed;
+    --subtext: #9aa0a6;
+    --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
+    --border: rgba(255, 255, 255, 0.1);
+}
