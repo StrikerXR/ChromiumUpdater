@@ -9,18 +9,6 @@
     --border: rgba(255, 255, 255, 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* Dark Mode Variables */
-        --bg: #000000;
-        --card-bg: rgba(30, 30, 30, 0.8);
-        --text: #e8eaed;
-        --subtext: #9aa0a6;
-        --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
-        --border: rgba(255, 255, 255, 0.1);
-    }
-}
-
 body {
     background-color: var(--bg);
     color: var(--text);
@@ -56,8 +44,12 @@ body {
     text-align: center;
     width: 280px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    animation: slideUp 0.8s cubic-bezier(0.2, 0, 0, 1);
-    transition: background 0.4s ease;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* More dynamic ease-out */
+    transition: background 0.4s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
 }
 
 .label {
@@ -92,6 +84,7 @@ body {
     background: #34a853; /* Green when live */
     border-radius: 50%;
     margin-right: 8px;
+    transition: background-color 0.5s ease;
 }
 
 .dot.loading {
@@ -115,12 +108,31 @@ button {
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
-    transition: transform 0.2s, background 0.3s;
+    transition: transform 0.2s, background 0.3s, box-shadow 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 button:active {
     transform: scale(0.95);
     background: #174ea6;
+}
+
+.download-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 13px;
+    color: var(--subtext);
+    text-decoration: none;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.5s ease, color 0.3s ease;
+}
+
+.download-link:hover {
+    color: var(--primary);
 }
 
 @keyframes slideUp {
