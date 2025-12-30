@@ -125,6 +125,9 @@ const App = () => {
         >
           Download now
         </a>
+        <div className="build-time">
+          Build: {__BUILD_TIME__}
+        </div>
       </div>
     </>
   );

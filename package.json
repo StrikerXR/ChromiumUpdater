@@ -3,8 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "npm@11.6.2",
   "scripts": {
-    "dev": "turbo dev",
+    "dev": "vite",
     "build": "turbo build",
     "lint": "turbo lint",
     "preview": "turbo preview"
