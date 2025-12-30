@@ -12,6 +12,7 @@ async function check() {
     const p = document.getElementById('pos');
     const s = document.getElementById('status');
     const d = document.getElementById('dot');
+    const dl = document.getElementById('download-link');
     
     // UI State: Loading
     s.innerText = "Syncing...";
@@ -43,9 +44,14 @@ async function check() {
         d.classList.remove('loading');
         d.style.background = "#34a853"; // Reset to green if it was red
         s.innerText = "Live: " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // Update and reveal download link
+        dl.href = `https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Android_Arm64/${newPos}/`;
+        dl.style.opacity = "1";
         
     } catch (e) {
         p.innerText = "Error";
+        dl.style.opacity = "0"; // Hide on error
         d.classList.remove('loading');
         d.style.background = "#ea4335"; // Red for error
         s.innerText = "API unreachable";
@@ -61,5 +67,34 @@ window.addEventListener('beforeinstallprompt', (e) => {
     console.log('App is ready to be installed on home screen');
 });
 
-// Initial check on load
-check();
+// --- 4. Theme Switcher ---
+const themeSwitcher = document.getElementById('theme-switcher');
+const themeIcon = themeSwitcher.querySelector('img');
+const body = document.body;
+
+// Function to set the theme
+function setTheme(isDark) {
+    body.classList.toggle('dark-mode', isDark);
+    themeIcon.src = isDark
+        ? 'https://img.icons8.com/ios-glyphs/30/ffffff/moon-symbol.png'
+        : 'https://img.icons8.com/ios-glyphs/30/000000/sun.png';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Event listener for the switcher
+themeSwitcher.addEventListener('click', () => {
+    setTheme(!body.classList.contains('dark-mode'));
+});
+
+// Check for saved theme on initial load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    // If no theme is saved, check prefers-color-scheme
+    if (savedTheme === null) {
+        setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+    } else {
+        setTheme(savedTheme === 'dark');
+    }
+    // Initial check on load
+    check();
+});
