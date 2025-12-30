@@ -9,14 +9,16 @@
     --border: rgba(255, 255, 255, 0.5);
 }
 
-/* Dark Mode Override Class */
-body.dark-mode {
-    --bg: #000000;
-    --card-bg: rgba(30, 30, 30, 0.8);
-    --text: #e8eaed;
-    --subtext: #9aa0a6;
-    --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
-    --border: rgba(255, 255, 255, 0.1);
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark Mode Variables */
+        --bg: #000000;
+        --card-bg: rgba(30, 30, 30, 0.8);
+        --text: #e8eaed;
+        --subtext: #9aa0a6;
+        --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
+        --border: rgba(255, 255, 255, 0.1);
+    }
 }
 
 body {
@@ -45,46 +47,17 @@ body {
 }
 
 .card {
-    position: relative; /* Needed to position the toggle icon */
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     padding: 40px;
-    border-radius: 40px;
+    border-radius: 40px; /* M3 Squircle */
     text-align: center;
     width: 280px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     animation: slideUp 0.8s cubic-bezier(0.2, 0, 0, 1);
     transition: background 0.4s ease;
-}
-
-/* Floating Theme Toggle Icon */
-.theme-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    padding: 8px;
-    background: transparent;
-    color: var(--subtext);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.theme-btn:hover {
-    background: rgba(128, 128, 128, 0.1);
-}
-
-.theme-btn svg {
-    width: 24px;
-    height: 24px;
 }
 
 .label {
@@ -116,7 +89,7 @@ body {
 .dot {
     width: 8px;
     height: 8px;
-    background: #34a853;
+    background: #34a853; /* Green when live */
     border-radius: 50%;
     margin-right: 8px;
 }
@@ -131,8 +104,7 @@ body {
     color: var(--subtext);
 }
 
-/* Main Refresh Button */
-.refresh-btn {
+button {
     margin-top: 30px;
     width: 100%;
     border: none;
@@ -146,7 +118,7 @@ body {
     transition: transform 0.2s, background 0.3s;
 }
 
-.refresh-btn:active {
+button:active {
     transform: scale(0.95);
     background: #174ea6;
 }
