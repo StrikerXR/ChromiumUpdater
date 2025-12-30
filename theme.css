@@ -1,0 +1,18 @@
+/* Color Palette for Material 3 Blue */
+:root {
+    --m3-blue: #1a73e8;
+    --m3-surface: #f8f9fa;
+    --m3-on-surface: #202124;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --m3-blue: #8ab4f8;
+        --m3-surface: #121212;
+        --m3-on-surface: #e8eaed;
+        --glass: rgba(30, 30, 30, 0.8);
+    }
+    body { background: #000; }
+    .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); }
+    .pos { color: var(--m3-on-surface); }
+}
