@@ -9,7 +9,14 @@
     {
       "src": "https://www.chromium.org/_/rsrc/1438879449167/config/customLogo.gif",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/chromium/chromium/main/chrome/app/theme/chromium/product_logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
