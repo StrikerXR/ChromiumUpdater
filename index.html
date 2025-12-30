@@ -6,17 +6,10 @@
     <title>Chromium Pulse</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a73e8">
 </head>
 <body>
     <div class="blob"></div>
     <div class="card">
-        <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-            </svg>
-        </button>
-
         <div class="logo-area">
             <div class="glow"></div>
             <div class="inner-logo"></div>
@@ -27,7 +20,7 @@
             <div id="dot" class="dot"></div>
             <div id="status" class="status">Connecting...</div>
         </div>
-        <button class="refresh-btn" onclick="check()">Refresh Build</button>
+        <button onclick="check()">Refresh Build</button>
     </div>
     <script src="script.js"></script>
 </body>
