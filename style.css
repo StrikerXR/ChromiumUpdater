@@ -29,15 +29,15 @@ body {
     height: 400px;
     background: var(--blob-gradient);
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(120px); /* Increased blur */
     z-index: -1;
     animation: move 10s infinite alternate;
 }
 
 .card {
     background: var(--card-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px); /* Increased blur */
+    -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--border);
     padding: 40px;
     border-radius: 40px; /* M3 Squircle */
