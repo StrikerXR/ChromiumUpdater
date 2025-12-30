@@ -135,6 +135,20 @@ button:active {
     color: var(--primary);
 }
 
+.download-link.new-build {
+    box-shadow: 0 0 15px rgba(52, 168, 83, 0.8);
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(52, 168, 83, 0.6);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(52, 168, 83, 1);
+    }
+}
+
 @keyframes slideUp {
     from { transform: translateY(30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }

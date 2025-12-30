@@ -7,8 +7,16 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// --- Haptic Feedback ---
+function triggerHapticFeedback() {
+    if (navigator.vibrate) {
+        navigator.vibrate(50); // 50ms vibration
+    }
+}
+
 // --- 2. Main Check Function ---
 async function check() {
+    triggerHapticFeedback(); // Haptic feedback on refresh
     const p = document.getElementById('pos');
     const s = document.getElementById('status');
     const d = document.getElementById('dot');
@@ -34,6 +42,9 @@ async function check() {
         if (lastPos && newPos > lastPos) {
             const diff = newPos - lastPos;
             console.log(`BuildBot pushed ${diff} new builds since last check.`);
+            dl.classList.add('new-build');
+        } else {
+            dl.classList.remove('new-build');
         }
         localStorage.setItem('lastKnownPos', newPos);
 
@@ -46,7 +57,7 @@ async function check() {
         s.innerText = "Live: " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
         // Update and reveal download link
-        dl.href = `https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Android_Arm64/${newPos}/`;
+        dl.href = `https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Android_Arm64/`;
         dl.style.opacity = "1";
         
     } catch (e) {
@@ -83,18 +94,22 @@ function setTheme(isDark) {
 
 // Event listener for the switcher
 themeSwitcher.addEventListener('click', () => {
+    triggerHapticFeedback(); // Haptic feedback on theme change
     setTheme(!body.classList.contains('dark-mode'));
 });
 
 // Check for saved theme on initial load
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
-    // If no theme is saved, check prefers-color-scheme
+    // Default to dark mode if no theme is saved
     if (savedTheme === null) {
-        setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+        setTheme(true);
     } else {
         setTheme(savedTheme === 'dark');
     }
     // Initial check on load
     check();
+
+    // Automatically check for updates every 2 minutes
+    setInterval(check, 120000);
 });
