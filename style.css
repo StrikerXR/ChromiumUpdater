@@ -1,10 +1,29 @@
 :root {
+    /* Light Mode Variables */
     --primary: #1a73e8;
     --bg: #eef2f7;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --text: #202124;
+    --subtext: #5f6368;
+    --blob-gradient: linear-gradient(135deg, #d2e3fc 0%, #ffffff 100%);
+    --border: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark Mode Variables */
+        --bg: #000000;
+        --card-bg: rgba(30, 30, 30, 0.8);
+        --text: #e8eaed;
+        --subtext: #9aa0a6;
+        --blob-gradient: linear-gradient(135deg, #1a73e8 0%, #000 100%);
+        --border: rgba(255, 255, 255, 0.1);
+    }
 }
 
 body {
     background-color: var(--bg);
+    color: var(--text);
     font-family: 'Google Sans', Roboto, sans-serif;
     display: flex;
     justify-content: center;
@@ -12,6 +31,7 @@ body {
     height: 100vh;
     margin: 0;
     overflow: hidden;
+    transition: background-color 0.4s ease;
 }
 
 /* Background animated blob */
@@ -19,7 +39,7 @@ body {
     position: absolute;
     width: 400px;
     height: 400px;
-    background: linear-gradient(135deg, #d2e3fc 0%, #ffffff 100%);
+    background: var(--blob-gradient);
     border-radius: 50%;
     filter: blur(80px);
     z-index: -1;
@@ -27,16 +47,17 @@ body {
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border);
     padding: 40px;
     border-radius: 40px; /* M3 Squircle */
     text-align: center;
     width: 280px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     animation: slideUp 0.8s cubic-bezier(0.2, 0, 0, 1);
+    transition: background 0.4s ease;
 }
 
 .label {
@@ -52,7 +73,7 @@ body {
 .pos {
     font-size: 3.5rem;
     font-weight: 700;
-    color: #202124;
+    color: var(--text);
     margin: 10px 0;
     letter-spacing: -2px;
     transition: all 0.5s ease;
@@ -80,7 +101,7 @@ body {
 
 .status {
     font-size: 13px;
-    color: #5f6368;
+    color: var(--subtext);
 }
 
 button {
@@ -116,4 +137,4 @@ button:active {
 @keyframes move {
     from { transform: translate(-50px, -50px); }
     to { transform: translate(50px, 50px); }
-}
+    }
