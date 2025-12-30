@@ -19,7 +19,7 @@
 
 /* Dark Mode class */
 .dark-mode {
-    --bg: #000000;
+    --bg: #000;
     --card-bg: rgba(30, 30, 30, 0.8);
     --text: #e8eaed;
     --subtext: #9aa0a6;
