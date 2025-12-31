@@ -17,7 +17,6 @@ export const useChromiumBuild = (platform) => {
   const [downloadLink, setDownloadLink] = useState('#');
   const [downloadLinkOpacity, setDownloadLinkOpacity] = useState(0);
   const [isNewBuild, setIsNewBuild] = useState(false);
-  const [cooldown, setCooldown] = useState(0);
   const [buildHistory, setBuildHistory] = useState([]);
 
   useEffect(() => {
@@ -44,8 +43,6 @@ export const useChromiumBuild = (platform) => {
   };
 
   const check = useCallback(async () => {
-    if (cooldown > 0) return;
-
     triggerHapticFeedback('light');
     setStatus('Syncing...');
     setDotClass('dot loading');
@@ -68,10 +65,8 @@ export const useChromiumBuild = (platform) => {
       setDotClass('dot');
       setStatus('API unreachable');
       triggerHapticFeedback('error');
-    } finally {
-      setCooldown(10);
     }
-  }, [cooldown, platform]);
+  }, [platform]);
 
   useEffect(() => {
     check();
@@ -79,12 +74,5 @@ export const useChromiumBuild = (platform) => {
     return () => clearInterval(interval);
   }, [platform]);
 
-  useEffect(() => {
-    if (cooldown > 0) {
-      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [cooldown]);
-
-  return { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, cooldown, check, buildHistory };
+  return { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory };
 };

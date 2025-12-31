@@ -8,12 +8,11 @@ import DownloadLink from './components/DownloadLink';
 import HistoryPopover from './components/HistoryPopover';
 import ShareButton from './components/ShareButton';
 import Settings from './components/Settings';
-import RateLimitScreen from './components/RateLimitScreen';
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [platform, setPlatform] = useState('Android_Arm64');
-  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, cooldown, check, buildHistory } = useChromiumBuild(platform);
+  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory } = useChromiumBuild(platform);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -38,7 +37,7 @@ const App = () => {
         <Logo />
         <BuildInfo pos={pos} status={status} dotClass={dotClass} />
         <div className="button-group">
-          <ActionButton onClick={check} disabled={cooldown > 0} cooldown={cooldown} />
+          <ActionButton onClick={check} />
           <ShareButton pos={pos} downloadLink={downloadLink} />
         </div>
         <DownloadLink href={downloadLink} opacity={downloadLinkOpacity} isNewBuild={isNewBuild} />
@@ -46,7 +45,6 @@ const App = () => {
       </div>
       <HistoryPopover history={buildHistory} />
       <Settings platform={platform} setPlatform={setPlatform} />
-      {cooldown > 0 && <RateLimitScreen cooldown={cooldown} />}
     </>
   );
 };
