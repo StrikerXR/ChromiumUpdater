@@ -16,9 +16,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
-    overflow: hidden;
     transition: background-color 0.4s ease;
 }
 
@@ -42,7 +41,8 @@ body {
     padding: 40px;
     border-radius: 40px;
     text-align: center;
-    width: 300px;
+    width: 90%;
+    max-width: 380px;
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
     animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
     transition: all 0.4s ease;
@@ -371,6 +371,7 @@ button:active {
     width: 90%;
     padding: 25px;
     border-radius: 30px;
+    margin: 20px;
   }
 
   .pos {
@@ -385,5 +386,10 @@ button:active {
   #settings-popover {
     width: 90%;
     padding: 20px;
+  }
+
+  button {
+    padding: 14px;
+    font-size: 14px;
   }
 }
