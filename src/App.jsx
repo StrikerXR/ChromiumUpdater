@@ -12,7 +12,7 @@ import Settings from './components/Settings';
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [platform, setPlatform] = useState('Android_Arm64');
-  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory } = useChromiumBuild(platform);
+  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory, error, retry, clearHistory } = useChromiumBuild(platform);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -35,7 +35,7 @@ const App = () => {
           <button popovertarget="settings-popover" className="settings-button">⚙️</button>
         </div>
         <Logo />
-        <BuildInfo pos={pos} status={status} dotClass={dotClass} />
+        <BuildInfo pos={pos} status={status} dotClass={dotClass} error={error} retry={retry} />
         <div className="button-group">
           <ActionButton onClick={check} />
           <ShareButton pos={pos} downloadLink={downloadLink} />
@@ -44,7 +44,7 @@ const App = () => {
         <button className="history-button" popovertarget="history-popover">History</button>
       </div>
       <HistoryPopover history={buildHistory} />
-      <Settings platform={platform} setPlatform={setPlatform} />
+      <Settings platform={platform} setPlatform={setPlatform} clearHistory={clearHistory} />
     </>
   );
 };

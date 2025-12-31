@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Settings = ({ platform, setPlatform }) => {
+const Settings = ({ platform, setPlatform, clearHistory }) => {
   const platforms = [
     "AndroidDesktop_arm64", "AndroidDesktop_x64", "Android_Arm64", "Arm", "Linux",
     "Linux_ChromiumOS", "Linux_ChromiumOS_Full", "Linux_x64", "Mac", "Mac_M-Series",
@@ -16,6 +16,7 @@ const Settings = ({ platform, setPlatform }) => {
       <select id="platform-select" value={platform} onChange={(e) => setPlatform(e.target.value)}>
         {platforms.map(p => <option key={p} value={p}>{p}</option>)}
       </select>
+      <button onClick={clearHistory} className="clear-history-button">Clear History</button>
       <button onClick={() => document.getElementById('settings-popover').hidePopover()}>Close</button>
     </div>
   );

@@ -98,6 +98,46 @@ body {
     color: var(--subtext);
 }
 
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.status.error {
+    color: #ea4335;
+    font-weight: 500;
+}
+
+.retry-button {
+    background: none;
+    border: 1px solid #ea4335;
+    color: #ea4335;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    margin-top: 10px;
+}
+
+.retry-button:hover {
+    background: #ea4335;
+    color: white;
+}
+
+.clear-history-button {
+    background: #ea4335;
+    color: white;
+    margin-top: 10px;
+}
+
+.clear-history-button:hover {
+    background: #d0382b;
+}
+
 button {
     margin-top: 30px;
     width: 100%;
@@ -284,6 +324,18 @@ button:active {
   cursor: pointer;
 }
 
+#platform-select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    color: var(--text);
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    font-family: 'Google Sans', Roboto, sans-serif;
+    font-size: 14px;
+}
+
 #settings-popover,
 #history-popover {
   background: rgba(255, 255, 255, 0.1);
@@ -306,4 +358,32 @@ button:active {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .card {
+    width: 90%;
+    padding: 25px;
+    border-radius: 30px;
+  }
+
+  .pos {
+    font-size: 2.8rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  #history-popover,
+  #settings-popover {
+    width: 90%;
+    padding: 20px;
+  }
 }

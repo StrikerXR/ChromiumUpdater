@@ -13,6 +13,7 @@ const fetchLatestBuild = async (platform) => {
 export const useChromiumBuild = (platform) => {
   const [pos, setPos] = useState('------');
   const [status, setStatus] = useState('Connecting...');
+  const [error, setError] = useState(null);
   const [dotClass, setDotClass] = useState('dot');
   const [downloadLink, setDownloadLink] = useState('#');
   const [downloadLinkOpacity, setDownloadLinkOpacity] = useState(0);
@@ -26,12 +27,17 @@ export const useChromiumBuild = (platform) => {
 
   const checkForNewBuild = (newPos) => {
     const lastPos = localStorage.getItem('lastKnownPos');
-    if (lastPos && newPos > lastPos) {
-      const diff = newPos - lastPos;
-      console.log(`BuildBot pushed ${diff} new builds since last check.`);
-      setIsNewBuild(true);
+    if (!lastPos || newPos > lastPos) {
+      if (lastPos && newPos > lastPos) {
+        const diff = newPos - lastPos;
+        console.log(`BuildBot pushed ${diff} new builds since last check.`);
+        setIsNewBuild(true);
+      } else {
+        setIsNewBuild(false);
+      }
       setBuildHistory(prevHistory => {
-        const newHistory = [...prevHistory, { pos: newPos, date: new Date().toISOString() }];
+        const newHistory = [...prevHistory, { pos: newPos, date: new
+Date().toISOString() }];
         if (newHistory.length > 10) newHistory.shift();
         localStorage.setItem('buildHistory', JSON.stringify(newHistory));
         return newHistory;
@@ -47,6 +53,7 @@ export const useChromiumBuild = (platform) => {
     setStatus('Syncing...');
     setDotClass('dot loading');
     setPos(prevPos => prevPos);
+    setError(null);
 
     try {
       const responseText = await fetchLatestBuild(platform);
@@ -64,9 +71,21 @@ export const useChromiumBuild = (platform) => {
       setDownloadLinkOpacity(0);
       setDotClass('dot');
       setStatus('API unreachable');
+      setError('Failed to fetch the latest build. Please check your network connection and try again.');
       triggerHapticFeedback('error');
     }
   }, [platform]);
+
+  const retry = () => {
+    check();
+  };
+
+  const clearHistory = () => {
+    localStorage.removeItem('buildHistory');
+    localStorage.removeItem('lastKnownPos');
+    setBuildHistory([]);
+    triggerHapticFeedback('light');
+  };
 
   useEffect(() => {
     check();
@@ -74,5 +93,5 @@ export const useChromiumBuild = (platform) => {
     return () => clearInterval(interval);
   }, [platform]);
 
-  return { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory };
+  return { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory, error, retry, clearHistory };
 };
