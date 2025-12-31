@@ -284,33 +284,21 @@ button:active {
   cursor: pointer;
 }
 
-#settings-popover {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+#settings-popover,
+#history-popover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+  color: var(--text);
 }
-
-.dark-mode #settings-popover {
-  background: #333;
-  color: #fff;
-}
-
 
 #history-popover {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   width: 80%;
   max-width: 400px;
-}
-
-.dark-mode #history-popover {
-  background: #333;
-  color: #fff;
 }
 
 .history-header {
