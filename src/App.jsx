@@ -5,13 +5,15 @@ import Logo from './components/Logo';
 import BuildInfo from './components/BuildInfo';
 import ActionButton from './components/ActionButton';
 import DownloadLink from './components/DownloadLink';
-import HistoryDrawer from './components/HistoryDrawer';
+import HistoryPopover from './components/HistoryPopover';
 import ShareButton from './components/ShareButton';
+import Settings from './components/Settings';
+import RateLimitScreen from './components/RateLimitScreen';
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, cooldown, check, buildHistory } = useChromiumBuild();
-  const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [platform, setPlatform] = useState('Android_Arm64');
+  const { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, cooldown, check, buildHistory } = useChromiumBuild(platform);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -29,7 +31,10 @@ const App = () => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <div className="blob"></div>
       <div className="card">
-        <ThemeSwitcher isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+        <div className="top-bar">
+          <ThemeSwitcher isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+          <button popovertarget="settings-popover" className="settings-button">⚙️</button>
+        </div>
         <Logo />
         <BuildInfo pos={pos} status={status} dotClass={dotClass} />
         <div className="button-group">
@@ -37,9 +42,11 @@ const App = () => {
           <ShareButton pos={pos} downloadLink={downloadLink} />
         </div>
         <DownloadLink href={downloadLink} opacity={downloadLinkOpacity} isNewBuild={isNewBuild} />
-        <button className="history-button" onClick={() => setIsHistoryVisible(true)}>History</button>
+        <button className="history-button" popovertarget="history-popover">History</button>
       </div>
-      <HistoryDrawer history={buildHistory} isVisible={isHistoryVisible} onClose={() => setIsHistoryVisible(false)} />
+      <HistoryPopover history={buildHistory} />
+      <Settings platform={platform} setPlatform={setPlatform} />
+      {cooldown > 0 && <RateLimitScreen cooldown={cooldown} />}
     </>
   );
 };
