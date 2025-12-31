@@ -35,7 +35,7 @@ export default defineConfig({
             urlPattern: /^https::\/.*/,
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'chromium-tracker-v2',
+              cacheName: 'chromium-tracker-v3',
               networkTimeoutSeconds: 10,
               expiration: {
                 maxEntries: 50,

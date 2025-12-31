@@ -85,7 +85,7 @@ body {
 .icon-button {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   color: var(--text);
   padding: 0.5rem;
@@ -101,10 +101,10 @@ body {
   background: var(--primary);
   color: white;
   border: none;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -180,8 +180,6 @@ body {
 }
 
 .download-link.new-build {
-  box-shadow: 0 0 15px rgba(52, 168, 83, 0.8);
-  animation: glow 1.5s infinite alternate;
 }
 
 .retry-button {
@@ -215,6 +213,101 @@ body {
   width: calc(100% - 4rem);
   max-width: 400px;
   box-sizing: border-box;
+}
+
+.settings-modal {
+  height: 87vh;
+  width: 100vw;
+  max-width: none;
+  border-radius: 20px 20px 0 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 1rem;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toggle-switch {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.toggle-switch button {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-switch button:first-child {
+  border-radius: 20px 0 0 20px;
+}
+
+.toggle-switch button:last-child {
+  border-radius: 0 20px 20px 0;
+}
+
+.toggle-switch button.active {
+  background: var(--primary);
+  color: white;
+}
+
+.channel-selector ul {
+  list-style: none;
+  padding: 0;
+}
+
+.channel-selector li {
+  margin-bottom: 0.5rem;
+}
+
+.history-modal {
+  height: 87vh;
+  width: 100vw;
+  max-width: none;
+  border-radius: 20px 20px 0 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 1rem;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.history-list {
+  margin-top: 1rem;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .haptic-feedback {

@@ -1,84 +1,82 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { triggerHapticFeedback } from '../utils/haptics';
 
 const fetchLatestBuild = async (platform) => {
-  const url = `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/${platform}%2FLAST_CHANGE?alt=media`;
-  const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&_=${new Date().getTime()}`);
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
+  const mediaUrl = `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/${platform}%2FLAST_CHANGE?alt=media`;
+  const metaUrl = `https://www.googleapis.com/storage/v1/b/chromium-browser-snapshots/o/${platform}%2FLAST_CHANGE`;
+  const proxy = 'https://corsproxy.io/?';
+
+  const [mediaRes, metaRes] = await Promise.all([
+    fetch(`${proxy}${encodeURIComponent(mediaUrl)}`),
+    fetch(`${proxy}${encodeURIComponent(metaUrl)}`)
+  ]);
+
+  if (!mediaRes.ok) {
+    throw new Error('Network response for build number was not ok');
   }
-  return res.text();
+
+  const pos = (await mediaRes.text()).trim();
+  let lastModified = new Date().toISOString();
+
+  if (metaRes.ok) {
+    try {
+      const meta = await metaRes.json();
+      lastModified = meta.updated;
+    } catch (e) {
+      console.error("Failed to parse metadata:", e);
+    }
+  }
+
+  return { pos, lastModified };
 };
 
-export const useChromiumBuild = (platform) => {
-  const [pos, setPos] = useState('------');
-  const [status, setStatus] = useState('Connecting...');
-  const [error, setError] = useState(null);
-  const [dotClass, setDotClass] = useState('dot');
-  const [downloadLink, setDownloadLink] = useState('#');
-  const [downloadLinkOpacity, setDownloadLinkOpacity] = useState(0);
+export const useChromiumBuild = (platform, buildType) => {
   const [isNewBuild, setIsNewBuild] = useState(false);
-  const [buildHistory, setBuildHistory] = useState([]);
+  const [buildHistory, setBuildHistory] = useState(() => JSON.parse(localStorage.getItem('buildHistory')) || []);
+
+  const { data, error, isLoading, isError, refetch } = useQuery({
+    queryKey: ['buildData', platform],
+    queryFn: () => fetchLatestBuild(platform),
+    refetchInterval: 120000,
+    staleTime: 60000,
+  });
 
   useEffect(() => {
-    const history = JSON.parse(localStorage.getItem('buildHistory')) || [];
-    setBuildHistory(history);
-  }, []);
+    if (isLoading) {
+      triggerHapticFeedback('light');
+    }
+  }, [isLoading]);
 
-  const checkForNewBuild = (newPos) => {
-    const lastPos = localStorage.getItem('lastKnownPos');
-    if (!lastPos || newPos > lastPos) {
-      if (lastPos && newPos > lastPos) {
-        const diff = newPos - lastPos;
-        console.log(`BuildBot pushed ${diff} new builds since last check.`);
-        setIsNewBuild(true);
+  useEffect(() => {
+    if (isError) {
+      triggerHapticFeedback('error');
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (data?.pos) {
+      const lastPos = localStorage.getItem('lastKnownPos');
+      const newPos = data.pos;
+      if (!lastPos || newPos > lastPos) {
+        if (lastPos && newPos > lastPos) {
+          setIsNewBuild(true);
+          triggerHapticFeedback('success');
+        } else {
+          setIsNewBuild(false);
+        }
+        setBuildHistory(prevHistory => {
+          const newHistoryItem = { pos: newPos, date: data.lastModified || new Date().toISOString() };
+          const newHistory = [newHistoryItem, ...prevHistory].slice(0, 10);
+          localStorage.setItem('buildHistory', JSON.stringify(newHistory));
+          return newHistory;
+        });
+        localStorage.setItem('lastKnownPos', newPos);
       } else {
         setIsNewBuild(false);
       }
-      setBuildHistory(prevHistory => {
-        const newHistory = [...prevHistory, { pos: newPos, date: new
-Date().toISOString() }];
-        if (newHistory.length > 10) newHistory.shift();
-        localStorage.setItem('buildHistory', JSON.stringify(newHistory));
-        return newHistory;
-      });
-    } else {
-      setIsNewBuild(false);
     }
-    localStorage.setItem('lastKnownPos', newPos);
-  };
-
-  const check = useCallback(async () => {
-    triggerHapticFeedback('light');
-    setStatus('Syncing...');
-    setDotClass('dot loading');
-    setPos(prevPos => prevPos);
-    setError(null);
-
-    try {
-      const responseText = await fetchLatestBuild(platform);
-      const newPos = responseText.trim();
-      checkForNewBuild(newPos);
-      setPos(newPos);
-      setStatus(`Live: ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
-      setDotClass('dot');
-      setDownloadLink(`https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=${platform}/${newPos}/`);
-      setDownloadLinkOpacity(1);
-      triggerHapticFeedback('success');
-    } catch (e) {
-      console.error("Failed to fetch latest build:", e);
-      setPos('Error');
-      setDownloadLinkOpacity(0);
-      setDotClass('dot');
-      setStatus('API unreachable');
-      setError('Failed to fetch the latest build. Please check your network connection and try again.');
-      triggerHapticFeedback('error');
-    }
-  }, [platform]);
-
-  const retry = () => {
-    check();
-  };
+  }, [data]);
 
   const clearHistory = () => {
     localStorage.removeItem('buildHistory');
@@ -87,11 +85,28 @@ Date().toISOString() }];
     triggerHapticFeedback('light');
   };
 
-  useEffect(() => {
-    check();
-    const interval = setInterval(check, 120000);
-    return () => clearInterval(interval);
-  }, [platform]);
+  const status = isLoading
+    ? 'Syncing...'
+    : error
+    ? 'API unreachable'
+    : `Published: ${new Date(data.lastModified).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 
-  return { pos, status, dotClass, downloadLink, downloadLinkOpacity, isNewBuild, check, buildHistory, error, retry, clearHistory };
+  const pos = data?.pos || '------';
+  const downloadLink = data?.pos ? `https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=${platform}/${data.pos}/` : '#';
+  const downloadLinkOpacity = data?.pos ? 1 : 0;
+  const dotClass = isLoading ? 'dot loading' : 'dot';
+
+  return {
+    pos,
+    status,
+    dotClass,
+    downloadLink,
+    downloadLinkOpacity,
+    isNewBuild,
+    check: refetch,
+    buildHistory,
+    error: error ? 'Failed to fetch the latest build. Please check your network connection and try again.' : null,
+    retry: refetch,
+    clearHistory
+  };
 };
