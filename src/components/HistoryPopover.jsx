@@ -1,11 +1,11 @@
 import React from 'react';
 
-const HistoryDrawer = ({ history, isVisible, onClose }) => {
+const HistoryPopover = ({ history }) => {
   return (
-    <div className={`history-drawer ${isVisible ? 'visible' : ''}`}>
+    <div id="history-popover" popover="auto">
       <div className="history-header">
         <h3>Build History</h3>
-        <button onClick={onClose}>Close</button>
+        <button onClick={() => document.getElementById('history-popover').hidePopover()}>Close</button>
       </div>
       <div className="history-list">
         {history.length > 0 ? (
@@ -23,4 +23,4 @@ const HistoryDrawer = ({ history, isVisible, onClose }) => {
   );
 };
 
-export default HistoryDrawer;
+export default HistoryPopover;
